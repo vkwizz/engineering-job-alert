@@ -1,0 +1,57 @@
+candidate:
+  degree_types:
+    - B.Tech
+    - B.E.
+  graduation_year: 2026
+  max_experience_years: 0
+
+locations:
+  preferred:
+    - Kerala
+    - Tamil Nadu
+    - Karnataka
+
+technical_domains:
+  include:
+    - frontend
+    - backend
+    - full_stack
+    - software_engineering
+    - python
+    - java
+    - database
+    - systems
+    - architecture
+    - ai
+    - machine_learning
+    - deep_learning
+    - cloud
+    - platform
+    - devops
+    - embedded_software
+
+  exclude:
+    - data_analyst
+    - business_analyst
+    - marketing
+    - sales
+    - hr
+    - finance
+    - accounting
+    - operations
+    - manual_testing
+    - content
+
+scoring:
+  company: 30
+  technical: 25
+  student: 20
+  location: 15
+  freshness: 7
+  source: 3
+
+alerts:
+  immediate_threshold: 70
+  digest_threshold: 50
+  telegram_enabled: true
+  gmail_enabled: true

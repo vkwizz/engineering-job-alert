@@ -1,0 +1,41 @@
+services:
+  # 24/7 Full-time Continuous Web Service & Scheduler (Render Free Tier)
+  - type: web
+    name: engineering-job-alert-service
+    env: python
+    buildCommand: "pip install -e ."
+    startCommand: "python -m src.job_alert.server"
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: job-alert-db
+          property: connectionString
+      - key: RUN_INTERVAL_HOURS
+        value: "6"
+      - key: RUN_ON_STARTUP
+        value: "true"
+      - key: MAX_QUERIES
+        value: "15"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SERPAPI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: GMAIL_SENDER_ADDRESS
+        sync: false
+      - key: GMAIL_RECIPIENT_ADDRESS
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+
+databases:
+  - name: job-alert-db
+    plan: free

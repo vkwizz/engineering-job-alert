@@ -1,0 +1,43 @@
+companies:
+  - canonical_name: "Google"
+    aliases:
+      - "Google India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology"
+  
+  - canonical_name: "Microsoft"
+    aliases:
+      - "Microsoft India Development Center"
+      - "MSIDC"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology"
+    
+  - canonical_name: "Amazon"
+    aliases:
+      - "Amazon Web Services"
+      - "AWS"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology"
+    
+  - canonical_name: "Qualcomm"
+    aliases:
+      - "Qualcomm Technologies"
+      - "Qualcomm Incorporated"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Semiconductor / Technology"
+
+  - canonical_name: "Deloitte"
+    aliases:
+      - "Deloitte USI"
+    tier: 2
+    company_score: 25
+    preferred: true
+    industry: "Consulting / Technology"

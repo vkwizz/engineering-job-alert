@@ -1,0 +1,54 @@
+import logging
+from typing import List
+from src.job_alert.ingestion.base import JobSource
+from src.job_alert.normalization.schemas import NormalizedJob
+from src.job_alert.normalization.normalizer import generate_canonical_key
+try:
+    from jobspy import scrape_jobs
+except ImportError:
+    scrape_jobs = None
+
+logger = logging.getLogger(__name__)
+
+class JobspySource(JobSource):
+    def fetch_jobs(self, query: str, location: str) -> List[NormalizedJob]:
+        if scrape_jobs is None:
+            logger.error("jobspy is not installed")
+            return []
+            
+        logger.info(f"Fetching jobs from JobSpy for query '{query}' in '{location}'")
+        try:
+            # Jobspy blocks if called too rapidly, wrap with retry in production
+            jobs = scrape_jobs(
+                site_name=["linkedin", "indeed", "glassdoor"],
+                search_term=query,
+                location=location,
+                results_wanted=20,
+                country_ece="india" # Using India explicitly based on requirements
+            )
+            
+            normalized_jobs = []
+            if jobs is not None and not jobs.empty:
+                for idx, row in jobs.iterrows():
+                    company_name = str(row.get('company', ''))
+                    title = str(row.get('title', ''))
+                    job_location = str(row.get('location', ''))
+                    job_id = str(row.get('id', idx))
+                    
+                    job = NormalizedJob(
+                        canonical_key=generate_canonical_key(company_name, title, job_location),
+                        title=title,
+                        company_name=company_name,
+                        location=job_location,
+                        raw_description=str(row.get('description', '')),
+                        apply_url=str(row.get('job_url', '')),
+                        source="jobspy",
+                        source_job_id=job_id,
+                        source_url=str(row.get('job_url', '')),
+                        confidence=85
+                    )
+                    normalized_jobs.append(job)
+            return normalized_jobs
+        except Exception as e:
+            logger.error(f"JobSpy failed: {e}")
+            return []

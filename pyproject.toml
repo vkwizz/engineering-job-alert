@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engineering-job-alert"
+version = "0.1.0"
+description = "Automated job/internship intelligence system for engineering students."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "python-jobspy",
+    "google-search-results",
+    "pandas",
+    "sqlalchemy",
+    "alembic",
+    "psycopg2-binary",
+    "pydantic",
+    "openai",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "python-telegram-bot",
+    "pyyaml",
+    "python-dotenv",
+    "jinja2",
+    "pytest",
+    "fastapi",
+    "uvicorn",
+    "apscheduler",
+]
