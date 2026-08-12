@@ -2,6 +2,19 @@ import re
 from typing import Tuple
 from src.job_alert.config import config
 from src.job_alert.normalization.schemas import NormalizedJob
+from src.job_alert.company.matcher import matcher
+
+def is_kerala_location(location_str: str) -> bool:
+    if not location_str:
+        return False
+    loc = location_str.lower()
+    kerala_cities = [
+        "kerala", "kochi", "cochin", "thiruvananthapuram", "trivandrum", 
+        "kozhikode", "calicut", "thrissur", "trichur", "kollam", "quilon", 
+        "kottayam", "kannur", "cannanore", "alappuzha", "alleppey", "palakkad", 
+        "perintalmanna", "kalamassery", "ernakulam", "chengannur", "pattambi"
+    ]
+    return any(city in loc for city in kerala_cities)
 
 def passes_hard_filters(job: NormalizedJob) -> Tuple[bool, str]:
     title_lower = job.title.lower()
@@ -40,5 +53,15 @@ def passes_hard_filters(job: NormalizedJob) -> Tuple[bool, str]:
     has_student_keyword = any(kw in title_lower for kw in student_fresher_keywords) or any(kw in desc_lower for kw in student_fresher_keywords)
     if not has_student_keyword and not ("engineer" in title_lower or "developer" in title_lower):
         return False, "Not eligible for B.Tech final year college students / freshers"
+
+    # 4. Location & Company Tier Filter:
+    # - Kerala: Allow ALL valid engineering fresher/intern jobs from ANY company (lower & higher rated companies allowed)
+    # - Outside Kerala (Tamil Nadu, Karnataka, etc.): Allow ONLY Tier-1 Top MNC/Product companies (Google, Qualcomm, Amazon, Microsoft, etc.)
+    in_kerala = is_kerala_location(job.location)
+    matched_comp = matcher.match(job.company_name)
+
+    if not in_kerala:
+        if not matched_comp or matched_comp.tier != 1:
+            return False, f"Outside Kerala ({job.location}): Only Tier-1 top companies (Google, Qualcomm, Amazon, etc.) are allowed"
 
     return True, "Passed hard filters"

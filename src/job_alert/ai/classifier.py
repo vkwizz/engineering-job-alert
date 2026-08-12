@@ -15,12 +15,12 @@ class AIClassifier:
         self.openai_key = config.openai_api_key
         
         if self.groq_key:
-            logger.info("Initializing AI Classifier with Groq API (llama-3.3-70b-versatile)...")
+            logger.info("Initializing AI Classifier with Groq API (llama-3.1-8b-instant)...")
             self.client = OpenAI(
                 api_key=self.groq_key,
                 base_url="https://api.groq.com/openai/v1"
             )
-            self.model = "llama-3.3-70b-versatile"
+            self.model = "llama-3.1-8b-instant"
             self.provider = "groq"
         elif self.openai_key:
             logger.info("Initializing AI Classifier with OpenAI API (gpt-4o-mini)...")

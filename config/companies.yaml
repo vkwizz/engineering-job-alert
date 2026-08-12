@@ -2,6 +2,7 @@ companies:
   - canonical_name: "Google"
     aliases:
       - "Google India"
+      - "Google LLC"
     tier: 1
     company_score: 30
     preferred: true
@@ -11,6 +12,7 @@ companies:
     aliases:
       - "Microsoft India Development Center"
       - "MSIDC"
+      - "Microsoft Corporation"
     tier: 1
     company_score: 30
     preferred: true
@@ -20,6 +22,7 @@ companies:
     aliases:
       - "Amazon Web Services"
       - "AWS"
+      - "Amazon Development Centre"
     tier: 1
     company_score: 30
     preferred: true
@@ -29,10 +32,148 @@ companies:
     aliases:
       - "Qualcomm Technologies"
       - "Qualcomm Incorporated"
+      - "Qualcomm India Private Limited"
     tier: 1
     company_score: 30
     preferred: true
     industry: "Semiconductor / Technology"
+
+  - canonical_name: "Apple"
+    aliases:
+      - "Apple India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology"
+
+  - canonical_name: "Nvidia"
+    aliases:
+      - "NVIDIA Corporation"
+      - "NVIDIA Graphics"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology / AI"
+
+  - canonical_name: "Intel"
+    aliases:
+      - "Intel Corporation"
+      - "Intel India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Semiconductor"
+
+  - canonical_name: "Adobe"
+    aliases:
+      - "Adobe Systems"
+      - "Adobe India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Software"
+
+  - canonical_name: "Cisco"
+    aliases:
+      - "Cisco Systems"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Networking / Software"
+
+  - canonical_name: "Oracle"
+    aliases:
+      - "Oracle Financial Services"
+      - "Oracle India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Enterprise Software"
+
+  - canonical_name: "IBM"
+    aliases:
+      - "IBM India"
+      - "IBM Software"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Technology"
+
+  - canonical_name: "Samsung"
+    aliases:
+      - "Samsung R&D"
+      - "Samsung Semiconductor"
+      - "PRISM Samsung"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Electronics / Software"
+
+  - canonical_name: "Goldman Sachs"
+    aliases:
+      - "Goldman Sachs Services"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Fintech / Technology"
+
+  - canonical_name: "JPMorgan Chase"
+    aliases:
+      - "JPMorgan"
+      - "JP Morgan"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Fintech / Technology"
+
+  - canonical_name: "Walmart Global Tech"
+    aliases:
+      - "Walmart"
+      - "Walmart Labs"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "E-Commerce / Tech"
+
+  - canonical_name: "AMD"
+    aliases:
+      - "Advanced Micro Devices"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Semiconductor"
+
+  - canonical_name: "Texas Instruments"
+    aliases:
+      - "TI India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Semiconductor"
+
+  - canonical_name: "Atlassian"
+    aliases:
+      - "Atlassian India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Software"
+
+  - canonical_name: "Salesforce"
+    aliases:
+      - "Salesforce India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Cloud / Software"
+
+  - canonical_name: "Stripe"
+    aliases:
+      - "Stripe India"
+    tier: 1
+    company_score: 30
+    preferred: true
+    industry: "Fintech / Software"
 
   - canonical_name: "Deloitte"
     aliases:
