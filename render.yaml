@@ -3,6 +3,7 @@ services:
   - type: web
     name: engineering-job-alert-service
     env: python
+    plan: free
     buildCommand: "pip install -e ."
     startCommand: "python -m src.job_alert.server"
     healthCheckPath: /health
