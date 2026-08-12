@@ -191,6 +191,10 @@ class PipelineRunner:
             # Send Gmail Alert
             send_gmail_alert(norm_job, score, summary)
 
+            # Send Google Space Alert (if webhook configured)
+            from src.job_alert.notifications.google_space import send_google_space_alert
+            send_google_space_alert(norm_job, score, summary)
+
             # Record Alert in DB
             alert_rec = Alert(
                 job_id=job.id,

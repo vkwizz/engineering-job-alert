@@ -2,6 +2,7 @@ import os
 import logging
 import threading
 from datetime import datetime, timezone
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from apscheduler.schedulers.background import BackgroundScheduler
 from src.job_alert.pipeline.runner import PipelineRunner
@@ -13,11 +14,6 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
 logger = logging.getLogger("job_alert.server")
-
-app = FastAPI(
-    title="Engineering Job Alert Agent API",
-    description="24/7 background worker and HTTP health monitor for automated job intelligence."
-)
 
 pipeline_lock = threading.Lock()
 pipeline_state = {
@@ -63,9 +59,9 @@ def execute_pipeline():
         pipeline_state["last_run_finished"] = datetime.now(timezone.utc).isoformat()
         pipeline_lock.release()
 
-@app.on_event("startup")
-def startup_event():
-    # Ensure database schema is created
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("Database schema validated at startup.")
@@ -83,11 +79,18 @@ def startup_event():
         thread = threading.Thread(target=execute_pipeline, daemon=True)
         thread.start()
 
-@app.on_event("shutdown")
-def shutdown_event():
+    yield
+
+    # Shutdown logic
     if scheduler.running:
         scheduler.shutdown(wait=False)
         logger.info("Scheduler shut down.")
+
+app = FastAPI(
+    title="Engineering Job Alert Agent API",
+    description="24/7 background worker and HTTP health monitor for automated job intelligence.",
+    lifespan=lifespan
+)
 
 @app.get("/")
 def read_root():
@@ -124,7 +127,7 @@ def health_check():
         "next_scheduled_run": next_run
     }
 
-@app.all("/run")
+@app.api_route("/run", methods=["GET", "POST"])
 def trigger_run(background_tasks: BackgroundTasks):
     if pipeline_state["is_running"]:
         return {"status": "in_progress", "message": "Pipeline is already running."}

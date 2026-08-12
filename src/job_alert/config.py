@@ -87,5 +87,6 @@ class AppConfig:
         self.smtp_port = int(os.getenv("SMTP_PORT", "587"))
         self.smtp_username = os.getenv("SMTP_USERNAME")
         self.smtp_password = os.getenv("SMTP_PASSWORD")
+        self.google_space_webhook_url = os.getenv("GOOGLE_SPACE_WEBHOOK_URL")
 
 config = AppConfig()
