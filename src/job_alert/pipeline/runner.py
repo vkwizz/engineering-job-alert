@@ -56,9 +56,10 @@ class PipelineRunner:
             search_items = generate_search_matrix(max_queries=self.max_queries)
             raw_jobs = []
 
-            for item in search_items:
+            total_items = len(search_items)
+            for idx, item in enumerate(search_items, 1):
                 query, loc = item["query"], item["location"]
-                logger.info(f"Discovering jobs for: query='{query}', location='{loc}'")
+                logger.info(f"[{idx}/{total_items}] Discovering jobs for: query='{query}', location='{loc}'")
                 
                 try:
                     js_jobs = self.jobspy.fetch_jobs(query, loc)

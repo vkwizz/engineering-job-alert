@@ -18,13 +18,14 @@ class AIClassifier:
             logger.info("Initializing AI Classifier with Groq API (llama-3.1-8b-instant)...")
             self.client = OpenAI(
                 api_key=self.groq_key,
-                base_url="https://api.groq.com/openai/v1"
+                base_url="https://api.groq.com/openai/v1",
+                timeout=15.0
             )
             self.model = "llama-3.1-8b-instant"
             self.provider = "groq"
         elif self.openai_key:
             logger.info("Initializing AI Classifier with OpenAI API (gpt-4o-mini)...")
-            self.client = OpenAI(api_key=self.openai_key)
+            self.client = OpenAI(api_key=self.openai_key, timeout=15.0)
             self.model = "gpt-4o-mini"
             self.provider = "openai"
         else:

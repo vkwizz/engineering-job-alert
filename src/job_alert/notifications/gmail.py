@@ -113,7 +113,7 @@ def send_email_smtp(subject: str, html_content: str, recipient: str) -> bool:
         msg["To"] = recipient
         msg.attach(MIMEText(html_content, "html"))
         
-        with smtplib.SMTP(config.smtp_host, config.smtp_port) as server:
+        with smtplib.SMTP(config.smtp_host, config.smtp_port, timeout=15) as server:
             server.starttls()
             server.login(config.smtp_username or sender, config.smtp_password)
             server.sendmail(sender, [recipient], msg.as_string())

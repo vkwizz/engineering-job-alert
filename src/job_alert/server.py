@@ -8,10 +8,19 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from src.job_alert.pipeline.runner import PipelineRunner
 from src.job_alert.db.engine import Base, engine, SessionLocal
 from src.job_alert.db.models import Job, Run
+import sys
+
+# Ensure stdout stream is unbuffered/line-buffered in cloud environments
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except Exception:
+        pass
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
 )
 logger = logging.getLogger("job_alert.server")
 

@@ -10,6 +10,8 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+import concurrent.futures
+
 class JobspySource(JobSource):
     def fetch_jobs(self, query: str, location: str) -> List[NormalizedJob]:
         if scrape_jobs is None:
@@ -17,15 +19,27 @@ class JobspySource(JobSource):
             return []
             
         logger.info(f"Fetching jobs from JobSpy for query '{query}' in '{location}'")
-        try:
-            # Jobspy blocks if called too rapidly, wrap with retry in production
-            jobs = scrape_jobs(
-                site_name=["linkedin", "indeed", "glassdoor"],
+        
+        def _do_scrape():
+            # Exclude glassdoor because datacenter IPs (Render) get instant 403 blocks
+            return scrape_jobs(
+                site_name=["linkedin", "indeed"],
                 search_term=query,
                 location=location,
-                results_wanted=20,
-                country_ece="india" # Using India explicitly based on requirements
+                results_wanted=15,
+                country_ece="india"
             )
+
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_do_scrape)
+                jobs = future.result(timeout=15)
+        except concurrent.futures.TimeoutError:
+            logger.warning(f"JobSpy timed out after 15s for query '{query}' in '{location}'")
+            return []
+        except Exception as e:
+            logger.error(f"JobSpy failed: {e}")
+            return []
             
             normalized_jobs = []
             if jobs is not None and not jobs.empty:
