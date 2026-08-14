@@ -36,6 +36,35 @@ def test_excluded_domains_rejected():
     passed2, _ = passes_hard_filters(job2)
     assert not passed2
 
+def test_experience_patterns_rejected():
+    # 1-3 years range
+    job1 = make_job("Software Engineer Intern", description="Requires 1-3 years of industry experience")
+    passed1, reason1 = passes_hard_filters(job1)
+    assert not passed1
+    assert "1-3 years" in reason1
+
+    # 2+ yrs
+    job2 = make_job("Software Engineer Fresher", description="Minimum 2+ yrs experience in React")
+    passed2, _ = passes_hard_filters(job2)
+    assert not passed2
+
+    # Minimum 1 year
+    job3 = make_job("Junior Developer", description="Must have at least 1 year of experience")
+    passed3, _ = passes_hard_filters(job3)
+    assert not passed3
+
+    # 3 years of experience phrase
+    job4 = make_job("Software Developer Intern", description="Requires 3 years of relevant experience in C++")
+    passed4, _ = passes_hard_filters(job4)
+    assert not passed4
+
+def test_missing_student_keyword_rejected():
+    # Generic "Software Engineer" without intern/fresher/junior/0-1
+    job = make_job("Software Engineer", description="Develop web applications using Python and PostgreSQL.")
+    passed, reason = passes_hard_filters(job)
+    assert not passed
+    assert "missing student/fresher keyword" in reason
+
 def test_valid_engineering_intern_passes_kerala():
     # In Kerala, non-Tier-1 local company passes
     job1 = make_job("Software Engineer Intern", description="Looking for B.Tech CS 2026 students", company="Local Startup Kochi", location="Kochi, Kerala")

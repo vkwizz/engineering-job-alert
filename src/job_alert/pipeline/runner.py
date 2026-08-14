@@ -62,13 +62,13 @@ class PipelineRunner:
                 logger.info(f"[{idx}/{total_items}] Discovering jobs for: query='{query}', location='{loc}'")
                 
                 try:
-                    js_jobs = self.jobspy.fetch_jobs(query, loc)
+                    js_jobs = self.jobspy.fetch_jobs(query, loc) or []
                     raw_jobs.extend(js_jobs)
                 except Exception as e:
                     logger.error(f"JobSpy error for {query} in {loc}: {e}")
 
                 try:
-                    sa_jobs = self.serpapi.fetch_jobs(query, loc)
+                    sa_jobs = self.serpapi.fetch_jobs(query, loc) or []
                     raw_jobs.extend(sa_jobs)
                 except Exception as e:
                     logger.error(f"SerpApi error for {query} in {loc}: {e}")

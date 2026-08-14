@@ -30,6 +30,7 @@ class JobspySource(JobSource):
                 country_ece="india"
             )
 
+        jobs = None
         try:
             with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
                 future = executor.submit(_do_scrape)
@@ -40,8 +41,9 @@ class JobspySource(JobSource):
         except Exception as e:
             logger.error(f"JobSpy failed: {e}")
             return []
-            
-            normalized_jobs = []
+
+        normalized_jobs = []
+        try:
             if jobs is not None and not jobs.empty:
                 for idx, row in jobs.iterrows():
                     company_name = str(row.get('company', ''))
@@ -64,5 +66,5 @@ class JobspySource(JobSource):
                     normalized_jobs.append(job)
             return normalized_jobs
         except Exception as e:
-            logger.error(f"JobSpy failed: {e}")
+            logger.error(f"JobSpy normalization failed: {e}")
             return []
